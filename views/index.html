@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/vuex"></script>
+    <title>Document</title>
+</head>
+<body >
+    <div id="entries">
+        <div class="  flex justify-center items-center my-6  "  >
+            <div class="flex justify-between items-center w-5/12 border-black border " >
+                <input class="w-full mr-1" v-model="query"/>
+                <button class="mr-2" v-on:click="clearQuery">X</button>
+            </div>
+           
+            <button v-on:click="fetchData">Search</button>
+        </div>
+        <div class="flex justify-center items-center w-96">
+        <ul >
+            <li v-for="entry in info" :key="entry.Link" class="border-gray-400 bg-gray-200 border rounded p-4 mt-1">
+                <p class="text-sm font-bold">{{entry.Link}}</p>
+                <p class="text-xl font-bold text-blue-600"><a target="_blank" :href="entry.Link">{{entry.API}}</a></p>
+                <p>{{entry.Description}}</p>
+                <p class="text-blue-500">{{entry.Category}}</p>
+            </li>
+        </ul>
+    </div>
+    </div>
+    
+    
+
+   
+    
+
+<script>
+    new Vue({
+        el:"#entries",
+        data(){
+            return {
+                info : null,
+                query : ""
+            }
+        }
+        ,
+        mounted() {
+            this.fetchData();
+        },
+        methods: {
+            fetchData(){
+                fetch(`/items?name=${this.query}`).then(resp=>{return resp.json()}).then(data=>this.info = data);
+            },
+            clearQuery(){
+                this.query = "";
+                this.fetchData();
+            }
+        },
+    })
+    
+    
+    
+    
+    
+
+</script>
+</body>
+</html>
